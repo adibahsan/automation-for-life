@@ -10,6 +10,8 @@
       "strict": true,
       "skipLibCheck": true,
       "resolveJsonModule": true,
+      "allowJs": true,
+      "declaration": true,
       "baseUrl": ".",
       "paths": {
         "@/*": ["src/*"]

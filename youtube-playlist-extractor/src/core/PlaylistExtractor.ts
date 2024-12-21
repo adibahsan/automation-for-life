@@ -1,9 +1,8 @@
 // src/core/PlaylistExtractor.ts
-import youtubeDl from 'youtube-dl-exec';
-import { validatePlaylistUrl } from './validators.js';
+import { exec } from 'youtube-dl-exec';
+import { validatePlaylistUrl } from './validator.js';
 import { FileHandler } from '../utils/fileHandler.js';
 import { createSpinner } from '../utils/spinner.js';
-import { logger } from '../utils/logger.js';
 import type { VideoData, PlaylistInfo, ExtractorOptions, OutputFormat } from '../types/index.js';
 
 export class PlaylistExtractor {
@@ -13,44 +12,71 @@ export class PlaylistExtractor {
         this.fileHandler = new FileHandler(options.outputDir);
     }
 
-    async extractLinks(playlistUrl: string, outputFormat: OutputFormat = 'txt'): Promise<VideoData[]> {
-        if (!validatePlaylistUrl(playlistUrl)) {
-            throw new Error('Invalid YouTube playlist URL');
-        }
+    private async execYoutubeDl(url: string): Promise<PlaylistInfo> {
+        const process = exec(url, {
+            dumpSingleJson: true,
+            flatPlaylist: true,
+            noCheckCertificates: true,
+            preferFreeFormats: true,
+            addHeader: ['referer:youtube.com', 'user-agent:googlebot']
+        });
 
-        const spinner = createSpinner('Fetching playlist information...');
-        spinner.start();
+        return new Promise((resolve, reject) => {
+            let stdout = '';
+            let stderr = '';
+
+            process.stdout?.on('data', (data) => {
+                stdout += data;
+            });
+
+            process.stderr?.on('data', (data) => {
+                stderr += data;
+            });
+
+            process.on('close', (code) => {
+                if (code === 0) {
+                    try {
+                        resolve(JSON.parse(stdout) as PlaylistInfo);
+                    } catch (error) {
+                        reject(new Error('Failed to parse youtube-dl output'));
+                    }
+                } else {
+                    reject(new Error(`youtube-dl failed with code ${code}: ${stderr}`));
+                }
+            });
+
+            process.on('error', reject);
+        });
+    }
+
+    async extractLinks(playlistUrl: string, outputFormat: OutputFormat = 'txt'): Promise<VideoData[]> {
+        const spinner = createSpinner('Validating playlist URL...');
 
         try {
-            await this.fileHandler.ensureOutputDir();
+            await validatePlaylistUrl(playlistUrl);
+            spinner.succeed('Playlist URL is valid');
+        } catch (error) {
+            spinner.fail('Invalid playlist URL');
+            throw error;
+        }
 
-            const playlistInfo = await youtubeDl(playlistUrl, {
-                dumpSingleJson: true,
-                noWarnings: true,
-                noCallHome: true,
-                extractFlat: true,
-            }) as PlaylistInfo;
+        spinner.start('Extracting video links...');
+        
+        try {
+            const result = await this.execYoutubeDl(playlistUrl);
 
-            if (!playlistInfo.entries?.length) {
-                throw new Error('No videos found in playlist');
-            }
-
-            const videoData: VideoData[] = playlistInfo.entries.map((entry, index) => ({
+            const videos: VideoData[] = result.entries.map((entry, index) => ({
                 index: index + 1,
-                url: `https://www.youtube.com/watch?v=${entry.id}`,
-                title: entry.title
+                title: entry.title,
+                url: `https://www.youtube.com/watch?v=${entry.id}`
             }));
 
-            const fileName = this.fileHandler.generateFileName(playlistInfo.title);
-            const content = this.fileHandler.formatDataForSaving(videoData, outputFormat);
-            const outputPath = await this.fileHandler.saveToFile(fileName, content, outputFormat);
-
-            spinner.succeed(`Successfully extracted ${videoData.length} video links!`);
-            logger.info(`Output saved to: ${outputPath}`);
-
-            return videoData;
+            spinner.succeed(`Successfully extracted ${videos.length} video links`);
+            
+            await this.fileHandler.writeVideos(videos, outputFormat);
+            return videos;
         } catch (error) {
-            spinner.fail('Extraction failed');
+            spinner.fail('Failed to extract video links');
             throw error;
         }
     }

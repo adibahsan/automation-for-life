@@ -3,12 +3,12 @@ import yargs from 'yargs';
 import { hideBin } from 'yargs/helpers';
 import type { OutputFormat } from '../types/index.js';
 
-export const createCliParser = (): Promise<{
+export const createCliParser = async (): Promise<{
     _: string[];
     format: OutputFormat;
     output: string;
 }> => {
-    return yargs(hideBin(process.argv))
+    const argv = await yargs(hideBin(process.argv))
         .usage('Usage: $0 <playlist-url> [options]')
         .positional('playlist-url', {
             describe: 'YouTube playlist URL',
@@ -27,6 +27,11 @@ export const createCliParser = (): Promise<{
             default: './output'
         })
         .help()
-        .alias('help', 'h')
-        .parseAsync();
+        .argv;
+
+    return {
+        _: argv._.map(arg => String(arg)),
+        format: argv.format as OutputFormat,
+        output: argv.output
+    };
 };

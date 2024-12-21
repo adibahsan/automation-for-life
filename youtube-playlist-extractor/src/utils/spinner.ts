@@ -1,11 +1,9 @@
 // src/utils/spinner.ts
-import ora, { Options } from 'ora';
+import ora from 'ora';
 
-export const createSpinner = (text: string, options?: Options): ora.Ora => {
+export const createSpinner = (text: string) => {
     return ora({
         text,
-        spinner: 'dots',
-        color: 'yellow',
-        ...options
-    });
+        spinner: 'dots'
+    }).start();
 };

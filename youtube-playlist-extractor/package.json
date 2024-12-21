@@ -6,9 +6,10 @@
     "playlist-extractor": "./dist/bin/playlist-extractor.js"
   },
   "scripts": {
+    "prebuild": "npm run clean",
     "build": "tsc",
     "start": "node dist/bin/playlist-extractor.js",
-    "dev": "ts-node-esm bin/playlist-extractor.ts",
+    "dev": "node --loader ts-node/esm bin/playlist-extractor.ts",
     "watch": "tsc -w",
     "test": "jest",
     "lint": "eslint . --ext .ts",
