@@ -1,0 +1,19 @@
+{
+  "name": "youtube-playlist-extractor",
+  "version": "1.0.0",
+  "main": "index.js",
+  "type": "module",
+  "scripts": {
+    "start": "node playlist-extractor.js"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "description": "",
+  "dependencies": {
+    "chalk": "^5.4.0",
+    "ora": "^8.1.1",
+    "yargs": "^17.7.2",
+    "youtube-dl-exec": "^3.0.10"
+  }
+}
