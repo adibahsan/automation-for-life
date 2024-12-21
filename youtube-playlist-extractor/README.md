@@ -227,11 +227,6 @@ For issues and feature requests, please use the GitHub issue tracker.
 
 ---
 
-<div align="center">
-
-Made with ❤️ for the Automators and YouTube playlist enthusiasts
-
-</div>
 
 ## 📚 Documentation
 
