@@ -1,14 +1,30 @@
 # YouTube Playlist Extractor
 
-A command-line tool to extract video links from YouTube playlists. Built with TypeScript and Node.js, this tool allows you to save playlist information in various formats (TXT, JSON, CSV).
+> Turn chaos into organized bliss - Extract, save, and manage your YouTube playlists with style!
+
+A lightning-fast ⚡️ command-line tool that helps you extract and organize video links from YouTube playlists. Built with TypeScript and powered by modern Node.js, this tool makes playlist management a breeze.
+
+<div align="center">
+
+[![TypeScript](https://img.shields.io/badge/TypeScript-007ACC?style=for-the-badge&logo=typescript&logoColor=white)](https://www.typescriptlang.org/)
+[![Node.js](https://img.shields.io/badge/Node.js-339933?style=for-the-badge&logo=nodedotjs&logoColor=white)](https://nodejs.org/)
+[![YouTube](https://img.shields.io/badge/YouTube-FF0000?style=for-the-badge&logo=youtube&logoColor=white)](https://www.youtube.com/)
+
+</div>
 
 ## Features
 
-- Extract video links from any public YouTube playlist
-- Support for multiple output formats (TXT, JSON, CSV)
-- Progress indicators and colorful console output
-- Custom output directory support
-- Built with TypeScript for better type safety and developer experience
+🎯 **Core Features**
+- 🔍 Extract links from any public YouTube playlist
+- 💾 Multiple output formats (TXT, JSON, CSV)
+- 📁 Custom output directory support
+- 🌈 Colorful console output
+
+🛠️ **Technical Highlights**
+- 🏃‍♂️ Blazing fast execution with yt-dlp
+- 📦 Modern ESM modules
+- 🔒 Type-safe with TypeScript
+- 🎯 Zero runtime dependencies (except yt-dlp)
 
 ## System Requirements
 
@@ -19,75 +35,60 @@ A command-line tool to extract video links from YouTube playlists. Built with Ty
 
 ## Installation
 
-1. **Install yt-dlp**:
-   - macOS (using Homebrew):
-     ```bash
-     brew install yt-dlp
-     ```
-   - Linux:
-     ```bash
-     sudo apt update
-     sudo apt install python3-pip
-     sudo pip3 install yt-dlp
-     ```
-   - Windows (WSL):
-     ```bash
-     sudo apt update
-     sudo apt install python3-pip
-     sudo pip3 install yt-dlp
-     ```
-
-2. **Clone the repository**:
+1. **Install yt-dlp** (our YouTube wizard):
    ```bash
+   # On macOS (using Homebrew)
+   brew install yt-dlp
+
+   # On Linux/WSL
+   sudo apt update && sudo apt install python3-pip
+   sudo pip3 install yt-dlp
+   ```
+
+2. **Clone & Setup**:
+   ```bash
+   # Clone the repository
    git clone <repository-url>
    cd youtube-playlist-extractor
-   ```
 
-3. **Install dependencies**:
-   ```bash
+   # Install dependencies
    pnpm install
-   ```
 
-4. **Build the project**:
-   ```bash
+   # Build the project
    pnpm run build
    ```
 
 ## Usage
 
 ### Development Mode
-Run the application in development mode with TypeScript:
 ```bash
-pnpm run dev "<playlist-url>" [options]
+pnpm run dev "https://www.youtube.com/playlist?list=YOUR_PLAYLIST_ID" [options]
 ```
 
 ### Production Mode
-Run the compiled version:
 ```bash
-pnpm start "<playlist-url>" [options]
+pnpm start "https://www.youtube.com/playlist?list=YOUR_PLAYLIST_ID" [options]
 ```
 
 ### Command Line Options
 
-- `--output, -o`: Specify output directory (default: "./output")
-- `--format, -f`: Specify output format: "txt", "json", or "csv" (default: "txt")
+| Option | Description | Default |
+|--------|-------------|---------|
+| `--output, -o` | Output directory | `"./output"` |
+| `--format, -f` | Output format (txt/json/csv) | `"txt"` |
 
 ### Examples
 
-1. Extract playlist with default settings:
-   ```bash
-   pnpm run dev "https://www.youtube.com/playlist?list=PLAYLIST_ID"
-   ```
+```bash
+# Basic usage - extracts to TXT
+pnpm run dev "https://www.youtube.com/playlist?list=PLAYLIST_ID"
 
-2. Save as JSON in a custom directory:
-   ```bash
-   pnpm run dev "https://www.youtube.com/playlist?list=PLAYLIST_ID" --output ./my-playlists --format json
-   ```
+# Save as JSON in custom directory
+pnpm run dev "https://www.youtube.com/playlist?list=PLAYLIST_ID" --output ./my-playlists --format json
 
-3. Export as CSV:
-   ```bash
-   pnpm run dev "https://www.youtube.com/playlist?list=PLAYLIST_ID" --format csv
-   ```
+# Export as CSV
+pnpm run dev "https://www.youtube.com/playlist?list=PLAYLIST_ID" --format csv
+```
 
 ## Project Structure
 
@@ -95,12 +96,12 @@ pnpm start "<playlist-url>" [options]
 youtube-playlist-extractor/
 ├── bin/                    # Command-line entry point
 ├── src/
-│   ├── cli/               # Command-line interface logic
-│   ├── core/              # Core functionality
+│   ├── cli/               # CLI magic happens here
+│   ├── core/              # Core extraction logic
 │   ├── types/             # TypeScript type definitions
-│   └── utils/             # Utility functions
-├── dist/                  # Compiled JavaScript files
-└── output/                # Default output directory
+│   └── utils/             # Helpful utilities
+├── dist/                  # Built JavaScript files
+└── output/                # Where your playlists go
 ```
 
 ## Configuration Files
@@ -223,3 +224,11 @@ DEBUG=* pnpm run dev "<playlist-url>"
 ## Support
 
 For issues and feature requests, please use the GitHub issue tracker.
+
+---
+
+<div align="center">
+
+Made with ❤️ for the Automators and YouTube playlist enthusiasts
+
+</div>
