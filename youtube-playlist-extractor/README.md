@@ -232,3 +232,18 @@ For issues and feature requests, please use the GitHub issue tracker.
 Made with ❤️ for the Automators and YouTube playlist enthusiasts
 
 </div>
+
+## 📚 Documentation
+
+For detailed documentation, please refer to the [`/docs`](./docs) directory:
+
+- [Architecture Overview](./docs/architecture.md) - System design and components
+- [Code Documentation](./docs/code-docs.md) - Detailed code explanations
+- [Development Guide](./docs/development-guide.md) - Guide for contributors
+- [API Reference](./docs/api-reference.md) - API documentation
+
+<div align="center">
+
+Made with ❤️ for the Automators and YouTube playlist enthusiasts
+
+</div>
